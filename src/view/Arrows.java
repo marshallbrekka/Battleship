@@ -15,36 +15,36 @@ public class Arrows extends JPanel implements ActionListener {
     private Arena arena;
 
 
-    private JButton left = new JButton();
-    private JButton right = new JButton();
-    private JButton top = new JButton();
-    private JButton bottom = new JButton();
-    private JButton rotate = new JButton();
-    private JButton play = new JButton();
-    private BattleshipGame window;
+    private JButton left;
+    private JButton right;
+    private JButton top;
+    private JButton bottom;
+    private JButton rotate;
+    private JButton play;
+    private GameView window;
 
     /**
      * creates the arrows
      * @param a Arena
      * @param newWindow BattleshipGame
      */
-    public Arrows(Arena a, BattleshipGame newWindow) {
-        this.window = newWindow;
+    public Arrows(GameView newWindow) {
+        window = newWindow;
         JPanel panel = new JPanel();
-        arena = a;
         BorderLayout bl = new BorderLayout();
         BorderLayout b2 = new BorderLayout();
         this.setLayout(bl);
         panel.setLayout(b2);
+        
 
         
 
-        left.setText("Left");
-        right.setText("Right");
-        top.setText("Up");
-        bottom.setText("Down");
-        rotate.setText("R");
-        play.setText("Play");
+        left = new JButton("Left");
+        right = new JButton("Right");
+        top = new JButton("Up");
+        bottom = new JButton("Down");
+        rotate = new JButton("R");
+        play = new JButton("Play");
         
         add(left, BorderLayout.WEST);
         add(right, BorderLayout.EAST);
@@ -61,6 +61,10 @@ public class Arrows extends JPanel implements ActionListener {
         rotate.addActionListener(this);
         play.addActionListener(this);
 
+    }
+    
+    public void setArena(Arena a) {
+    	arena = a;
     }
 
     /**
@@ -80,7 +84,21 @@ public class Arrows extends JPanel implements ActionListener {
         } else if (source == rotate) {
             arena.rotateShip();
         } else if (source == play) {
-            window.startGame();
+            window.startGameCallback();
         }
+    }
+    
+    public void enable() {
+    	JButton[] buttons = {top, bottom, left, right, rotate, play};
+    	for(int i = 0; i < buttons.length; i++) {
+    		buttons[i].setEnabled(true);
+    	}
+    }
+    
+    public void disable() {
+    	JButton[] buttons = {top, bottom, left, right, rotate, play};
+    	for(int i = 0; i < buttons.length; i++) {
+    		buttons[i].setEnabled(false);
+    	}
     }
 }

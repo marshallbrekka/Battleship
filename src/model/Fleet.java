@@ -29,7 +29,8 @@ public class Fleet implements Serializable {
      * @param y int
      * @return Ship
      */
-    public Ship isHit(int x, int y) {
+    public Ship isHit(ShotLocation shot) {
+    	int x = shot.x, y = shot.y;
         Ship hit = null;
         Ship.Rotation rotation;
         int[] position;

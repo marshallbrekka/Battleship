@@ -11,21 +11,21 @@ import java.awt.event.*;
  */
 public class Fire extends JPanel implements ActionListener {
     private JButton fire = new JButton();
-    private BattleshipGame window;
+    private GameView window;
 
 
     /**
      * creates the fire button
      * @param newWindow BattleshipGame
      */
-    public Fire(BattleshipGame newWindow) {
-        this.window = newWindow;
-        this.setOpaque(false);
+    public Fire(GameView newWindow) {
+        window = newWindow;
+        setOpaque(false);
 
 
         BorderLayout bl = new BorderLayout();
 
-        this.setLayout(bl);
+        setLayout(bl);
         fire.setText("Fire!");
 
         add(fire, BorderLayout.CENTER);
@@ -41,7 +41,7 @@ public class Fire extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         Object source = ae.getSource();
         if (source == fire) {
-            window.fire();
+            window.fireCallback();
         }
     }
 

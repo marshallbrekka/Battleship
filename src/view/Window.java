@@ -1,92 +1,83 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import controller.Controller;
+import controller.ViewController;
 
 public class Window extends JFrame {
-	private Controller main;
+	private ViewController controller;
 	private JMenuItem server, client, exit;
 	private JMenu menu;
-	private boolean clientRunning = false, serverRunning = false;
+	private JMenuBar menuBar;
+
+	JLayeredPane container;
+	JPanel overlay;
 	
-	public final static int X_LOC = 0, Y_LOC = 0, A_X = 321, A_Y = 63,
-    L_X = 30, WIDTH = 600, HEIGHT = 400, F_Y = 320, F_H = 50;
+	public final static int WIDTH = 600, HEIGHT = 400;
 	
-	
-	public static void main(String[] args) {
-		new Window(null);
-	}
-	
-	private Window(Controller main) {
-		this.main = main;
+	public Window(ViewController controller) {
+		this.controller = controller;
 		setName("Battleship");
         setTitle("Battleship");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createMenu();
-        
-        Insets size = getInsets();
-        setSize(WIDTH, HEIGHT + size.top);
-        // Set the frame size and make it visible
-
-        setResizable(false);
-        setVisible(true);
-        
+        container = new JLayeredPane();
+        overlay = new JPanel();
+        overlay.setBounds(0, 0, WIDTH, HEIGHT);
+        overlay.setBackground(new Color(255, 255, 255, 200)); //r,g,b,alpha
+        container.add(overlay,1);
+        getContentPane().add(container);   
 	}
 	
+	public void resize() {
+		Insets size = getInsets();
+        setSize(WIDTH, HEIGHT + size.top + menuBar.getHeight());
+	}
+	
+	public void setExitMode(boolean mode) {
+		exit.setEnabled(mode);
+		client.setEnabled(!mode);
+		server.setEnabled(!mode);
+	}
+	
+	public void showOverlay() {
+		overlay.setVisible(true);
+	}
+	
+	public void hideOverlay() {
+		overlay.setVisible(false);
+	}
+	
+	public void addGameView(JPanel view) {
+		container.add(view, 2);
+	}
 	
 	private void createMenu() {
-		
-		JMenuBar menuBar = new JMenuBar();
-
+		menuBar = new JMenuBar();
 		menu = new JMenu("Game");
 		menuBar.add(menu);
-
-		
 		server = new JMenuItem("Create Game");
 		server.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				menu.remove(server);
-				menu.remove(client);
-				menu.add(exit);
-				serverRunning = true;
-				//main.startServer();
+				controller.createServerCallback();
 			}
 		});
 		menu.add(server);
 		
-		
 		client = new JMenuItem("Join Game");
 		client.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
-				String host = (String)JOptionPane.showInputDialog(
-	                    Window.this,
-	                    "Enter the hostname of the player you want to play against",
-	                    "Join Game",
-	                    JOptionPane.PLAIN_MESSAGE,
-	                    null,
-	                    null,
-	                    "localhost");
-
-				
-				if (host != null && host.length() != 0) {
-					
-					menu.remove(server);
-					menu.remove(client);
-					menu.add(exit);
-					clientRunning = true;
-					System.out.println(host);
-					//main.startClient(host);
-				} 
+				controller.createClientCallback();
 			}
 		});
 		menu.add(client);
@@ -94,31 +85,15 @@ public class Window extends JFrame {
 		exit = new JMenuItem("Exit Game");
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				internalExitGame();
+				controller.exitGameCallback();
 			}
 		});
+		menu.add(exit);
+		exit.setEnabled(false);
 
-		
 		setJMenuBar(menuBar);
 	}
-	
-	public void exitGame() {
-		menu.remove(exit);
-		menu.add(server);
-		menu.add(client);
-		//main.startServer();
-		serverRunning = false;
-		clientRunning = false;
-	}
-	
-	private void internalExitGame() {
-		
-		if(serverRunning) {
-			//main.stopServer();
-		}
-		//main.endGame();
-		exitGame();
-	}
+
 	
 	
 }

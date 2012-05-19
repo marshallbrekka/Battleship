@@ -1,18 +1,20 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import model.Fleet;
 import model.Ship;
+import model.ShotLocation;
 
 
 /**
@@ -31,14 +33,14 @@ public class Arena extends JPanel {
     private ImageIcon selected = new ImageIcon(loadImage("selected.png"));
     private ImageIcon hit = new ImageIcon(loadImage("hit.png"));
     private ImageIcon miss = new ImageIcon(loadImage("miss.png"));
-    private ImageIcon oceanImg = new ImageIcon(loadImage("ocean.png"));
+    private BufferedImage oceanImg = loadImage("ocean.png");
 
 
     //private Image[] baseImg = new Image[10];
     
     private ImageIcon[] icon = new ImageIcon[ARENA_SIZE * 2];
 
-    private JLabel ocean = new JLabel(oceanImg);
+    
 
     //private JLabel[] boats = new JLabel[5];
     private JRadioButton[] boats = new JRadioButton[Fleet.FLEET_SIZE];
@@ -70,7 +72,8 @@ public class Arena extends JPanel {
         setLayout(null);
         setBounds(X_LOC, Y_LOC, WIDTH, HEIGHT);
 
-        ocean.setBounds(X_LOC, Y_LOC, WIDTH, HEIGHT);
+        
+   
 
         this.makeGrid(positionShips);
         this.makeShips(positionShips);
@@ -87,7 +90,7 @@ public class Arena extends JPanel {
             add(boats[i], z);
         }
           
-        add(ocean);
+        
     }
 
     /**
@@ -126,16 +129,31 @@ public class Arena extends JPanel {
         for (int i = 0; i < icon.length; i++) {
             icon[i] = new ImageIcon(loadImage(paths[i]));
         }
-
+        JRadioButton btn;
         
         // make each ship and apply the icon and set if visible and add to group
         for (int p = 0; p < boats.length; p++) {
-            boats[p] = new JRadioButton(icon[p]);
-            boats[p].setSelectedIcon(icon[p + SELECTED]);
-            boats[p].setVisible(positionShips);
-            ships.add(boats[p]);
+            btn = new JRadioButton(icon[p]);
+            btn.setBorder(null);
+            btn.setOpaque(false);
+            btn.setSelectedIcon(icon[p + SELECTED]);
+            btn.setVisible(positionShips);
+            boats[p] = btn;
+            ships.add(btn);
         }
 
+    }
+    
+    public void disableButtons() {
+    	for(int i = 0; i < boats.length; i++) {
+    		boats[i].setEnabled(false);
+    	}
+    }
+    
+    public void enableButtons() {
+    	for(int i = 0; i < boats.length; i++) {
+    		boats[i].setEnabled(true);
+    	}
     }
 
     /**
@@ -145,15 +163,20 @@ public class Arena extends JPanel {
      */
     private void makeGrid(boolean positionShips) {
         // draw hit points
+    	JRadioButton btn;
         for (int i = 0; i < ARENA_SIZE; i++) {
             for (int  y = 0; y < ARENA_SIZE; y++) {
-                grid[i][y] = new JRadioButton(open);
-                grid[i][y].setBounds(i * CELL, y * CELL, CELL, CELL);
-                grid[i][y].setSelectedIcon(selected);
-                grid[i][y].setDisabledIcon(open);
-                grid[i][y].setEnabled(!positionShips);
-                group.add(grid[i][y]);
-                add(grid[i][y]);
+                btn = new JRadioButton(open);
+                btn.setMargin(null);
+                btn.setBounds(i * CELL, y * CELL, CELL, CELL);
+                btn.setSelectedIcon(selected);
+                btn.setOpaque(false);
+                btn.setDisabledIcon(open);
+                btn.setEnabled(!positionShips);
+                btn.setBorder(null);
+                grid[i][y] = btn;
+                group.add(btn);
+                add(btn);
             }
         }
 
@@ -219,9 +242,7 @@ public class Arena extends JPanel {
         if (i < boats.length) {
             add(boats[i], z);
             commitShips(++i);
-        } else {
-            add(ocean);
-        }
+        } 
 
 
     }
@@ -231,7 +252,8 @@ public class Arena extends JPanel {
      * @param x int
      * @param y int
      */
-    public void setMiss(int x, int y) {
+    public void setMiss(ShotLocation shot) {
+    	int x = shot.x, y = shot.y;
         grid[x][y].setDisabledIcon(miss);
         grid[x][y].setSelectedIcon(miss);
         grid[x][y].setEnabled(false);
@@ -244,7 +266,8 @@ public class Arena extends JPanel {
      * @param x int
      * @param y int
      */
-    public void setHit(int x, int y) {
+    public void setHit(ShotLocation shot) {
+    	int x = shot.x, y = shot.y;
         grid[x][y].setDisabledIcon(hit);
         grid[x][y].setSelectedIcon(hit);
         grid[x][y].setEnabled(false);
@@ -265,7 +288,7 @@ public class Arena extends JPanel {
      * gets the selected cell
      * @return int[]
      */
-    public int[] getSelectedCell() {
+    public ShotLocation getSelectedCell() {
         int[] pos = {-1, -1};
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -276,7 +299,7 @@ public class Arena extends JPanel {
             }
         }
         
-        return pos;
+        return new ShotLocation(pos);
     }
 
     /**
@@ -430,6 +453,24 @@ public class Arena extends JPanel {
         int width = getWidth();
         int height = getHeight();
         setBounds(x, y, width, height);
+    }
+    
+    /**
+     * paints elements onto the canvas
+     *
+     * @param g Graphics
+     */
+    public void paintComponent(Graphics g) {
+        
+        super.paintComponent(g);
+        
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Draw an image
+        
+        g2.drawImage(oceanImg, 0, 0, null);
+
+
     }
 
    

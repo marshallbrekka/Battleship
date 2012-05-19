@@ -40,8 +40,8 @@ public class Board implements Serializable {
      * @param x int
      * @param y int
      */
-    public void setHit(int x, int y) {
-        grid[x][y] = true;
+    public void setHit(ShotLocation shot) {
+        grid[shot.x][shot.y] = true;
     }
 
     /**
@@ -49,8 +49,8 @@ public class Board implements Serializable {
      * @param x int
      * @param y int
      */
-    public void setMiss(int x, int y) {
-        grid[x][y] = false;
+    public void setMiss(ShotLocation shot) {
+        grid[shot.x][shot.y] = false;
     }
 
 }

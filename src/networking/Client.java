@@ -15,7 +15,7 @@ public class Client implements Runnable {
 	Socket client;
 	
 	public Client(String serverName, int port, Controller main) {
-		this.serverName = serverName;
+	 	this.serverName = serverName;
 		this.port = port;
 		this.main = main;
 	}
@@ -23,6 +23,7 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		try {
+			System.out.println("trying to connect to server");
 			this.client = new Socket(serverName, port);
 			main.setChannel(new Channel(client, main));
 		} catch (UnknownHostException e) {
@@ -30,6 +31,7 @@ public class Client implements Runnable {
 					"Make sure the address and port are correct");
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.out.println("exception in Client.run");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -40,6 +42,7 @@ public class Client implements Runnable {
 		try {
 			client.close();
 		} catch (IOException e) {
+			System.out.println("exception in Client.stop");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
