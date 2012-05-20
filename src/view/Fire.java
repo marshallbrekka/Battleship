@@ -33,6 +33,14 @@ public class Fire extends JPanel implements ActionListener {
         fire.addActionListener(this);
 
     }
+    
+    public void enable() {
+    	fire.setEnabled(true);
+    }
+    
+    public void disable() {
+    	fire.setEnabled(false);
+    }
 
     /**
      * calls the fire method when the firebutton is clicked

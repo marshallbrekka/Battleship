@@ -64,6 +64,7 @@ public class ViewController {
 	 * both arenas are visible, fire button is visible but disabled
 	 */
 	public void bothFleetsRecievedView() {
+		window.hideOverlay();
 		gameView.playView(main.getEnemyFleet());
 	}
 	
@@ -79,6 +80,11 @@ public class ViewController {
 	 */
 	public void waitingForShotView() {
 		gameView.waitingForShotView();
+	}
+	
+	public void recieveShot(ShotLocation shot) {
+		gameView.recieveShot(shot);
+		chooseShotView();
 	}
 	
 	public void showErrorAlert(String msg) {
@@ -125,6 +131,7 @@ public class ViewController {
 	
 	public void fireCallback(ShotLocation shot) {
 		waitingForShotView();
+		main.fireShot(shot);
 	}
 	
 	

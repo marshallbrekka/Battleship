@@ -66,24 +66,17 @@ public class GameView extends JPanel {
         arrows = new Arrows(this);
         arrows.setBounds(A_X, A_Y, Arena.ARENA_SIZE * Arena.CELL,
                 Arena.ARENA_SIZE * Arena.CELL);
-        
         add(arrows);
-        
         resetView();
-   
-/*
-        ai.placeShips(fleet);
-        ai.placeShips(fleet2);
-        arena2 = new Arena(fleet2, false);
-        arena.setPosition(L_X, A_Y);
-        arena2.setPosition(A_X, A_Y);
-        add(arena);
-        add(arena2);
-        arena2.setVisible(false);
-*/
     }
     
     public void resetView() {
+    	if(arena != null) {
+    		this.remove(arena);
+    	}
+    	if(arena2 != null) {
+    		remove(arena2);
+    	}
     	fleet = new Fleet();
     	ai.placeShips(fleet);
     	arena = new Arena(fleet, true);
@@ -91,9 +84,6 @@ public class GameView extends JPanel {
     	arrows.setVisible(true);
     	arrows.disable();
     	arrows.setArena(arena);
-    	if(arena != null) {
-    		this.remove(arena);
-    	}
     	arena.setPosition(L_X, A_Y);
     	arena.disableButtons();
     	add(arena);
@@ -126,11 +116,11 @@ public class GameView extends JPanel {
     }
     
     public void chooseShotView() {
-    	fire.setEnabled(true);
+    	fire.enable();
     }
     
     public void waitingForShotView() {
-    	fire.setEnabled(false);
+    	fire.disable();
     }
 
     /**
@@ -144,8 +134,9 @@ public class GameView extends JPanel {
             if (shot.x == -1) {
                 throw new NoCellSelected();
             } else {
+            	displayShot(shot, board2, arena2, fleet2);
             	controller.fireCallback(shot);
-            	displayShot(shot, board2, arena2, fleet2);      
+            	      
             }
         }
         catch (NoCellSelected e) {
@@ -170,13 +161,13 @@ public class GameView extends JPanel {
     private void displayShot(ShotLocation shot, Board board, Arena arena, Fleet fleet) {
     	ship = fleet.isHit(shot);
     	if (ship != null) {
-            board.setHit(shot);
+            //board.setHit(shot);
             arena.setHit(shot);
             if (ship.getHealth() == 0) {
                 arena.showShip(ship.getIndex());
             }
     	} else {
-    		board.setMiss(shot);
+    		//board.setMiss(shot);
     		arena.setMiss(shot);
     	}         
     }
@@ -202,9 +193,10 @@ public class GameView extends JPanel {
      */
     private BufferedImage loadImage(String fileName) {
         BufferedImage im = null;
-        fileName = "../img/" + fileName;
+        fileName = "img/" + fileName;
         try {
-            im = ImageIO.read(getClass().getResource(fileName));
+        	im = ImageIO.read(getClass().getClassLoader().getResource(fileName));
+            //im = ImageIO.read(getClass().getResource(fileName));
         } catch (IOException e) {
             System.out.println("Error loading " + fileName);
         }

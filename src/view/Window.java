@@ -52,10 +52,12 @@ public class Window extends JFrame {
 	
 	public void showOverlay() {
 		overlay.setVisible(true);
+		overlay.repaint();
 	}
 	
 	public void hideOverlay() {
 		overlay.setVisible(false);
+		overlay.repaint();
 	}
 	
 	public void addGameView(JPanel view) {

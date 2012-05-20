@@ -11,9 +11,6 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import view.GameView;
-import view.Window;
-
 import model.Fleet;
 import model.ShotLocation;
 import networking.Channel;
@@ -25,8 +22,8 @@ public class Controller {
 	private boolean gameStarted = false;
 	private boolean serverRunning = false, clientMode = false;
 	private String name = "Marshall";
-	private GameLogic gameLogic;
 	private Fleet ours, theirs;
+	private boolean playAgainUs = false, playAgainThem = false;
 	private ViewController view;
 	
 	private Server server = null;
@@ -34,9 +31,7 @@ public class Controller {
 	public int port = 5558;
 	
 	
-	public static void main(String[] args) {
-		new Controller();
-	}
+	
 	
 	public Controller() {
 		view = new ViewController(this);
@@ -78,6 +73,7 @@ public class Controller {
 	public void stopServer() {
 		server.stop();
 		server = null;
+		serverRunning = false;
 	}
 	
 	public void startClient(String host) {
@@ -93,11 +89,13 @@ public class Controller {
 	public void stopChannel() {
 		channel.stop();
 		channel = null;
+		clientMode = false;
 	}
 	
 	public void setFleet(Fleet fleet) {
 		ours = fleet;
 		startGameIfHaveBothFleets();
+		channel.sendFleet(fleet);
 	}
 	
 	public Fleet getEnemyFleet() {
@@ -105,7 +103,10 @@ public class Controller {
 	}
 	
 	public void startGameIfHaveBothFleets() {
+		System.out.println("start game if both fleets");
 		if(ours != null && theirs != null) {
+			System.out.println("has both");
+			view.bothFleetsRecievedView();
 			if(clientMode) {
 				view.waitingForShotView();
 			} else {
@@ -116,22 +117,36 @@ public class Controller {
 	
 	
 	public void newGame() {
+		ours = theirs = null;
+		if(playAgainUs && playAgainThem) {
+			view.startupView();
+			playAgainUs = playAgainThem = false;
+		}
 		System.out.println("COntroller.newGame");
+		gameStarted = true;
 		view.positionFleetView();
 	}
 	
 	
 	
 	public void endGame() {
+		clientMode = false;
 		if(serverRunning) {
 			stopServer();
-		} else {
-			
+		} 
+		if(gameStarted) {
+			channel.exitGame();
+			gameStarted = false;
+			view.startupView();
 		}
+		stopChannel();
 	}
 	
 	public void fireShot(ShotLocation shot) {
-		//if(ours.)
+		channel.sendShot(shot);
+		if(theirs.getHealth() == 0) {
+			playAgainPrompt(true);
+		}
 	}
 	
 	public void recieveFleetCallback(Fleet fleet) {
@@ -141,8 +156,33 @@ public class Controller {
 	}
 	
 	public void recieveShotCallback(ShotLocation shot) {
-		gameLogic.recieveShot(shot);
 		System.out.println("recieved shot");
+		view.recieveShot(shot);
+		if(ours.getHealth() == 0) {
+			playAgainPrompt(false);
+		}
+		
+	}
+	
+	private void playAgainPrompt(boolean won) {
+		String status = won ? "WON!" : "LOST.";
+		boolean result = view.confirmDialog("YOU " + status + " Play again?");
+		
+		if(result) {
+			channel.playAgain();
+			playAgainUs = true;
+			view.startupView();
+			playAgainIfBothWantTo();
+		} else {
+			channel.exitGame();
+			endGame();
+		}
+	}
+	
+	private void playAgainIfBothWantTo() {
+		if(playAgainUs && playAgainThem) {
+			newGame();
+		}
 	}
 	
 	public void joinGameCallback(String name) {
@@ -160,11 +200,15 @@ public class Controller {
 	}
 	
 	public void exitGameCallback() {
-		System.out.println("exit game");
+		if(gameStarted) {
+			view.showErrorAlert("The other player left the game");
+			endGame();
+		}
 	}
 	
 	public void playAgainCallback() {
-		System.out.println("play again");
+		playAgainThem = true;
+		playAgainIfBothWantTo();
 	}
 	
 	public void gameJoinedCallback() {

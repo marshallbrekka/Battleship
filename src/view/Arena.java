@@ -71,15 +71,10 @@ public class Arena extends JPanel {
         setMaximumSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
         setBounds(X_LOC, Y_LOC, WIDTH, HEIGHT);
-
-        
-   
-
         this.makeGrid(positionShips);
         this.makeShips(positionShips);
         this.positionShips(fleet);
 
-    
         int z = -1;
         if (positionShips) {
             boats[0].setSelected(true);
@@ -99,10 +94,11 @@ public class Arena extends JPanel {
      * @return BufferedImage
      */
     private BufferedImage loadImage(String fileName) {
-    	fileName = "../img/" + fileName;
+    	fileName = "img/" + fileName;
         BufferedImage im = null;
         try {
-            im = ImageIO.read(getClass().getResource(fileName));
+        	im = ImageIO.read(getClass().getClassLoader().getResource(fileName));
+            //im = ImageIO.read(getClass().getResource(fileName));
         } catch (IOException e) {
             System.out.println("Error loading " + fileName);
         }
