@@ -1,6 +1,8 @@
 package model;
+
 /**
  * PTBoat
+ * 
  * @author Marshall
  */
 public class PTBoat extends Ship {

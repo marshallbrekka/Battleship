@@ -1,6 +1,8 @@
 package model;
+
 /**
  * destroyer
+ * 
  * @author Marshall
  */
 public class Destroyer extends Ship {

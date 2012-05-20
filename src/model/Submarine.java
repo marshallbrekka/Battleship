@@ -1,6 +1,8 @@
 package model;
+
 /**
  * submarine
+ * 
  * @author Marshall
  */
 public class Submarine extends Ship {

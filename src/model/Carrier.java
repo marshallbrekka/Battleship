@@ -1,6 +1,8 @@
 package model;
+
 /**
  * carrier
+ * 
  * @author Marshall
  */
 public class Carrier extends Ship {

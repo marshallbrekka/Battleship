@@ -1,8 +1,7 @@
 package model;
 
-
 /**
- *
+ * 
  * @author Marshall
  */
 public class NoCellSelected extends Exception {
@@ -15,10 +14,11 @@ public class NoCellSelected extends Exception {
         System.out.println("Error");
     }
 
-
     /**
      * no cell selected with custome mesasage
-     * @param msg the detail message.
+     * 
+     * @param msg
+     *            the detail message.
      */
     public NoCellSelected(String msg) {
         super(msg);

@@ -1,26 +1,26 @@
 package controller;
+
 import model.Board;
 import model.Fleet;
 import model.Ship;
 
 /**
- * An AI class with methods to place ships,
- * validate ship positions, and fire on enemy ships
+ * An AI class with methods to place ships, validate ship positions, and fire on
+ * enemy ships
+ * 
  * @author Marshall
  */
 public class AI {
     public final static int RANGE = 11;
 
-
     /**
      * creates an AI
-     * @param fleet Fleet
+     * 
+     * @param fleet
+     *            Fleet
      */
     public void placeShips(Fleet fleet) {
 
-
-
-        
         boolean[][] locations = new boolean[RANGE - 1][RANGE - 1];
 
         int rotation;
@@ -29,14 +29,12 @@ public class AI {
         int xRange = RANGE - 1;
         int yRange = RANGE - 1;
 
-
         int xPos;
         int yPos;
 
         Ship.Rotation rot = Ship.Rotation.HORIZONTAL;
 
         int[] pos = new int[2];
-
 
         // fill array with numbers
         for (int i = 0; i < locations.length; i++) {
@@ -51,13 +49,12 @@ public class AI {
             yRange = RANGE;
             xPos = 0;
             yPos = 0;
-            
+
             rotation = (int) Math.round(Math.random());
             ship = fleet.getShip(p);
             size = ship.getSize();
             boolean ok = true;
 
-            
             if (rotation == 0) {
                 xRange -= size + 1;
             } else {
@@ -68,18 +65,20 @@ public class AI {
                 xPos = (int) (Math.random() * xRange - 1) + 1;
                 yPos = (int) (Math.random() * yRange - 1) + 1;
 
+                if (xPos == xRange)
+                    xPos -= 1;
+                else if (xPos == 0)
+                    xPos += 1;
+                if (yPos == yRange)
+                    yPos -= 1;
+                else if (yPos == 0)
+                    yPos += 1;
 
-                if (xPos == xRange) xPos -= 1;
-                else if (xPos == 0) xPos += 1;
-                if (yPos == yRange) yPos -= 1;
-                else if (yPos == 0) yPos += 1;
-                
                 xPos--;
                 yPos--;
 
-
                 ok = false;
-                
+
                 for (int c = 0; c < size; c++) {
                     if (rotation == 0) {
                         if (!locations[xPos + c][yPos]) {
@@ -105,8 +104,7 @@ public class AI {
 
                     }
                 }
-                
-                
+
             }
 
             ship.setPosition(xPos, yPos);
@@ -118,8 +116,9 @@ public class AI {
 
     /**
      * checks the fleet positions to make sure they are valid
-     *
-     * @param fleet Fleet
+     * 
+     * @param fleet
+     *            Fleet
      * @return boolean
      */
     public boolean isFleetPositionValid(Fleet fleet) {
@@ -131,14 +130,12 @@ public class AI {
         int xRange = RANGE - 1;
         int yRange = RANGE - 1;
 
-
         int xPos;
         int yPos;
 
         Ship.Rotation rot = Ship.Rotation.HORIZONTAL;
 
         int[] pos = new int[2];
-
 
         // fill array with numbers
         for (int i = 0; i < locations.length; i++) {
@@ -154,14 +151,13 @@ public class AI {
             xPos = 0;
             yPos = 0;
 
-
             ship = fleet.getShip(p);
             size = ship.getSize();
             if (ship.getRotation() == Ship.Rotation.HORIZONTAL) {
                 rotation = 0;
-            } else rotation = 1;
+            } else
+                rotation = 1;
             boolean ok = true;
-
 
             if (rotation == 0) {
                 xRange -= size + 1;
@@ -169,11 +165,8 @@ public class AI {
                 yRange -= size + 1;
             }
 
-
             xPos = ship.getPosition()[0];
             yPos = ship.getPosition()[1];
-
-
 
             for (int c = 0; c < size; c++) {
                 if (rotation == 0) {
@@ -188,7 +181,6 @@ public class AI {
 
             }
 
-
             for (int c = 0; c < size; c++) {
                 if (rotation == 0) {
                     locations[xPos + c][yPos] = false;
@@ -198,21 +190,16 @@ public class AI {
 
             }
 
-
-
-
-
-
-
         }
         return true;
 
     }
-    
+
     /**
      * tells the ai to take a choose a cell to shoot at
-     *
-     * @param grid Board
+     * 
+     * @param grid
+     *            Board
      * @return int[]
      */
     public int[] takeShot(Board grid) {
@@ -221,33 +208,35 @@ public class AI {
         int xPos = 0;
         int yPos = 0;
         int[] coordinates = new int[2];
-        
+
         boolean shot = true;
-        
+
         while (shot) {
-            
+
             xPos = (int) (Math.random() * xRange - 1) + 1;
             yPos = (int) (Math.random() * yRange - 1) + 1;
 
-
-            if (xPos == xRange) xPos -= 1;
-            else if (xPos == 0) xPos += 1;
-            if (yPos == yRange) yPos -= 1;
-            else if (yPos == 0) yPos += 1;
+            if (xPos == xRange)
+                xPos -= 1;
+            else if (xPos == 0)
+                xPos += 1;
+            if (yPos == yRange)
+                yPos -= 1;
+            else if (yPos == 0)
+                yPos += 1;
 
             xPos--;
             yPos--;
-            
+
             if (grid.isEmpty(xPos, yPos) == null) {
                 shot = false;
             }
-            
+
         }
         coordinates[0] = xPos;
         coordinates[1] = yPos;
 
         return coordinates;
-        
-        
+
     }
 }

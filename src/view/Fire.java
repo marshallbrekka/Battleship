@@ -1,27 +1,27 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
-
 
 import java.awt.event.*;
 
 /**
- *
+ * 
  * @author Marshall
  */
 public class Fire extends JPanel implements ActionListener {
     private JButton fire = new JButton();
     private GameView window;
 
-
     /**
      * creates the fire button
-     * @param newWindow BattleshipGame
+     * 
+     * @param newWindow
+     *            BattleshipGame
      */
     public Fire(GameView newWindow) {
         window = newWindow;
         setOpaque(false);
-
 
         BorderLayout bl = new BorderLayout();
 
@@ -33,18 +33,20 @@ public class Fire extends JPanel implements ActionListener {
         fire.addActionListener(this);
 
     }
-    
+
     public void enable() {
-    	fire.setEnabled(true);
+        fire.setEnabled(true);
     }
-    
+
     public void disable() {
-    	fire.setEnabled(false);
+        fire.setEnabled(false);
     }
 
     /**
      * calls the fire method when the firebutton is clicked
-     * @param ae ActionEvent
+     * 
+     * @param ae
+     *            ActionEvent
      */
     public void actionPerformed(ActionEvent ae) {
         Object source = ae.getSource();
@@ -53,6 +55,4 @@ public class Fire extends JPanel implements ActionListener {
         }
     }
 
-
-    
 }

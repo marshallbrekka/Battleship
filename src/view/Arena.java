@@ -16,17 +16,15 @@ import model.Fleet;
 import model.Ship;
 import model.ShotLocation;
 
-
 /**
  * the arena class, creates the cells and the ships
+ * 
  * @author Marshall
  */
 public class Arena extends JPanel {
-    public final static int X_LOC = 0, Y_LOC = 0, ARENA_SIZE = 10,
-    WIDTH = 250, HEIGHT = 250, RANGE = 9, CELL = 25, SELECTED = 5,
-    ROTATED = 10, ROTATED_SELECTED = 15;
-
-    
+    public final static int X_LOC = 0, Y_LOC = 0, ARENA_SIZE = 10, WIDTH = 250,
+            HEIGHT = 250, RANGE = 9, CELL = 25, SELECTED = 5, ROTATED = 10,
+            ROTATED_SELECTED = 15;
 
     private ImageIcon open = new ImageIcon(loadImage("open.png"));
 
@@ -35,16 +33,12 @@ public class Arena extends JPanel {
     private ImageIcon miss = new ImageIcon(loadImage("miss.png"));
     private BufferedImage oceanImg = loadImage("ocean.png");
 
+    // private Image[] baseImg = new Image[10];
 
-    //private Image[] baseImg = new Image[10];
-    
     private ImageIcon[] icon = new ImageIcon[ARENA_SIZE * 2];
 
-    
-
-    //private JLabel[] boats = new JLabel[5];
+    // private JLabel[] boats = new JLabel[5];
     private JRadioButton[] boats = new JRadioButton[Fleet.FLEET_SIZE];
-    
 
     private JRadioButton[][] grid = new JRadioButton[ARENA_SIZE][ARENA_SIZE];
 
@@ -57,12 +51,15 @@ public class Arena extends JPanel {
 
     /**
      * creates the arena
-     * @param newFleet Fleet
-     * @param positionShips boolean
+     * 
+     * @param newFleet
+     *            Fleet
+     * @param positionShips
+     *            boolean
      */
     public Arena(Fleet newFleet, boolean positionShips) {
-        //super("Hello Frame Application");
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // super("Hello Frame Application");
+        // setDefaultCloseOperation(EXIT_ON_CLOSE);
         hidden.setBounds(WIDTH * ARENA_SIZE, 0, 0, 0);
         group.add(hidden);
 
@@ -84,49 +81,51 @@ public class Arena extends JPanel {
         for (int i = 0; i < boats.length; i++) {
             add(boats[i], z);
         }
-          
-        
+
     }
 
     /**
      * loads an image as a bufferedimage
-     * @param fileName String
+     * 
+     * @param fileName
+     *            String
      * @return BufferedImage
      */
     private BufferedImage loadImage(String fileName) {
-    	fileName = "img/" + fileName;
+        fileName = "img/" + fileName;
         BufferedImage im = null;
         try {
-        	im = ImageIO.read(getClass().getClassLoader().getResource(fileName));
-            //im = ImageIO.read(getClass().getResource(fileName));
+            im = ImageIO
+                    .read(getClass().getClassLoader().getResource(fileName));
+            // im = ImageIO.read(getClass().getResource(fileName));
         } catch (IOException e) {
             System.out.println("Error loading " + fileName);
         }
         return im;
     }
+
     /**
-     * loads  the ship icons
-     * @param positionShips boolean true if the board is for positionion the
-     * ships not fighting
+     * loads the ship icons
+     * 
+     * @param positionShips
+     *            boolean true if the board is for positionion the ships not
+     *            fighting
      */
     private void makeShips(boolean positionShips) {
-        String[] paths = {"ptboat.png", "destroyer.png",
-            "submarine.png", "battleship.png", "carrier.png",
-            "ptboat_s.png", "destroyer_s.png", "submarine_s.png",
-            "battleship_s.png", "carrier_s.png", "ptboat_r.png",
-            "destroyer_r.png", "submarine_r.png",
-            "battleship_r.png", "carrier_r.png",
-            "ptboat_s_r.png", "destroyer_s_r.png",
-            "submarine_s_r.png", "battleship_s_r.png",
-            "carrier_s_r.png"};
+        String[] paths = { "ptboat.png", "destroyer.png", "submarine.png",
+                "battleship.png", "carrier.png", "ptboat_s.png",
+                "destroyer_s.png", "submarine_s.png", "battleship_s.png",
+                "carrier_s.png", "ptboat_r.png", "destroyer_r.png",
+                "submarine_r.png", "battleship_r.png", "carrier_r.png",
+                "ptboat_s_r.png", "destroyer_s_r.png", "submarine_s_r.png",
+                "battleship_s_r.png", "carrier_s_r.png" };
 
-
-        //create ship images
+        // create ship images
         for (int i = 0; i < icon.length; i++) {
             icon[i] = new ImageIcon(loadImage(paths[i]));
         }
         JRadioButton btn;
-        
+
         // make each ship and apply the icon and set if visible and add to group
         for (int p = 0; p < boats.length; p++) {
             btn = new JRadioButton(icon[p]);
@@ -139,29 +138,31 @@ public class Arena extends JPanel {
         }
 
     }
-    
+
     public void disableButtons() {
-    	for(int i = 0; i < boats.length; i++) {
-    		boats[i].setEnabled(false);
-    	}
+        for (int i = 0; i < boats.length; i++) {
+            boats[i].setEnabled(false);
+        }
     }
-    
+
     public void enableButtons() {
-    	for(int i = 0; i < boats.length; i++) {
-    		boats[i].setEnabled(true);
-    	}
+        for (int i = 0; i < boats.length; i++) {
+            boats[i].setEnabled(true);
+        }
     }
 
     /**
      * makes the grid
-     * @param positionShips boolean true if the board is for positionion the
-     * ships not fighting
+     * 
+     * @param positionShips
+     *            boolean true if the board is for positionion the ships not
+     *            fighting
      */
     private void makeGrid(boolean positionShips) {
         // draw hit points
-    	JRadioButton btn;
+        JRadioButton btn;
         for (int i = 0; i < ARENA_SIZE; i++) {
-            for (int  y = 0; y < ARENA_SIZE; y++) {
+            for (int y = 0; y < ARENA_SIZE; y++) {
                 btn = new JRadioButton(open);
                 btn.setMargin(null);
                 btn.setBounds(i * CELL, y * CELL, CELL, CELL);
@@ -180,7 +181,9 @@ public class Arena extends JPanel {
 
     /**
      * positions the ships based on their positions in the fleet object
-     * @param newFleet Fleet
+     * 
+     * @param newFleet
+     *            Fleet
      */
     private void positionShips(Fleet newFleet) {
         Ship ship;
@@ -188,7 +191,7 @@ public class Arena extends JPanel {
         int width;
         int height;
         int[] pos;
-        
+
         // place fleet
         for (int s = 0; s < Fleet.FLEET_SIZE; s++) {
             ship = newFleet.getShip(s);
@@ -203,18 +206,18 @@ public class Arena extends JPanel {
                 width = CELL;
                 height = CELL * ship.getSize();
             }
-            
+
             boats[s].setBounds(pos[0] * CELL, pos[1] * CELL, width, height);
-            
 
         }
 
-        
     }
 
     /**
      * commits the ships to their current positions
-     * @param newFleet Fleet
+     * 
+     * @param newFleet
+     *            Fleet
      */
     public void commitShips(Fleet newFleet) {
         this.removeAll();
@@ -225,12 +228,14 @@ public class Arena extends JPanel {
 
         int i = 0;
         commitShips(i);
-        
+
     }
 
     /**
      * commits the ships to their current positions
-     * @param i int the counter variable set to 0 by defualt
+     * 
+     * @param i
+     *            int the counter variable set to 0 by defualt
      */
     private void commitShips(int i) {
 
@@ -238,18 +243,20 @@ public class Arena extends JPanel {
         if (i < boats.length) {
             add(boats[i], z);
             commitShips(++i);
-        } 
-
+        }
 
     }
 
     /**
      * sets the cell to a miss
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     public void setMiss(ShotLocation shot) {
-    	int x = shot.x, y = shot.y;
+        int x = shot.x, y = shot.y;
         grid[x][y].setDisabledIcon(miss);
         grid[x][y].setSelectedIcon(miss);
         grid[x][y].setEnabled(false);
@@ -259,11 +266,14 @@ public class Arena extends JPanel {
 
     /**
      * sets the cell to a hit
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     public void setHit(ShotLocation shot) {
-    	int x = shot.x, y = shot.y;
+        int x = shot.x, y = shot.y;
         grid[x][y].setDisabledIcon(hit);
         grid[x][y].setSelectedIcon(hit);
         grid[x][y].setEnabled(false);
@@ -273,7 +283,9 @@ public class Arena extends JPanel {
 
     /**
      * shows the ship at the index specified
-     * @param index int
+     * 
+     * @param index
+     *            int
      */
     public void showShip(int index) {
         boats[index].setVisible(true);
@@ -282,10 +294,11 @@ public class Arena extends JPanel {
 
     /**
      * gets the selected cell
+     * 
      * @return int[]
      */
     public ShotLocation getSelectedCell() {
-        int[] pos = {-1, -1};
+        int[] pos = { -1, -1 };
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j].isSelected()) {
@@ -294,12 +307,13 @@ public class Arena extends JPanel {
                 }
             }
         }
-        
+
         return new ShotLocation(pos);
     }
 
     /**
      * gets the selected ship
+     * 
      * @return int
      */
     private int getSelectedShip() {
@@ -314,27 +328,28 @@ public class Arena extends JPanel {
 
     /**
      * moves the selected ship by the ammount specified
-     *
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     private void moveShip(int x, int y) {
         int ship = getSelectedShip();
         int height, width;
         Ship shipObj = fleet.getShip(ship);
         int[] coordinates = shipObj.getPosition();
-       
+
         if (this.isInRange(shipObj, coordinates[0] + x, coordinates[1] + y)) {
             shipObj.setPosition(coordinates[0] + x, coordinates[1] + y);
             width = (int) boats[ship].getBounds().getWidth();
             height = (int) boats[ship].getBounds().getHeight();
-            boats[ship].setBounds((coordinates[0] + x)
-                * CELL, (coordinates[1] + y) * CELL, width, height);
+            boats[ship].setBounds((coordinates[0] + x) * CELL,
+                    (coordinates[1] + y) * CELL, width, height);
         }
-  
+
         repaint();
 
-        
     }
 
     /**
@@ -372,8 +387,8 @@ public class Arena extends JPanel {
         int ship = getSelectedShip();
         int width, height;
         Ship shipObj = fleet.getShip(ship);
-        int[] offset = {0, 0};
-        int pos[] = {0, 0};
+        int[] offset = { 0, 0 };
+        int pos[] = { 0, 0 };
         if (shipObj.getRotation() == Ship.Rotation.HORIZONTAL) {
             shipObj.setRotation(Ship.Rotation.VERTICAL);
             width = CELL;
@@ -382,7 +397,6 @@ public class Arena extends JPanel {
             boats[ship].setIcon(icon[ship]);
             boats[ship].setSelectedIcon(icon[ship + SELECTED]);
 
-            
         } else {
             shipObj.setRotation(Ship.Rotation.HORIZONTAL);
             width = CELL * shipObj.getSize();
@@ -390,7 +404,7 @@ public class Arena extends JPanel {
             boats[ship].setIcon(icon[ship + ROTATED]);
             boats[ship].setSelectedIcon(icon[ship + ROTATED_SELECTED]);
             offset[0] = -1;
-            
+
         }
 
         boolean ok = true;
@@ -402,18 +416,21 @@ public class Arena extends JPanel {
                 shipObj.setPosition(pos[0] + offset[0], pos[1] + offset[1]);
             }
         }
-       
+
         boats[ship].setBounds((pos[0] * CELL), (pos[1] * CELL), width, height);
-        
+
         repaint();
     }
 
     /**
      * checks if the ship is in the board range
-     *
-     * @param ship Ship
-     * @param x int
-     * @param y int
+     * 
+     * @param ship
+     *            Ship
+     * @param x
+     *            int
+     * @param y
+     *            int
      * @return boolean
      */
     private boolean isInRange(Ship ship, int x, int y) {
@@ -423,7 +440,8 @@ public class Arena extends JPanel {
 
         if (ship.getRotation() == Ship.Rotation.HORIZONTAL) {
             rotation = 0;
-        } else rotation = 1;
+        } else
+            rotation = 1;
 
         int size = ship.getSize();
 
@@ -435,39 +453,41 @@ public class Arena extends JPanel {
 
         if (x <= xRange && x >= 0 && y <= yRange && y >= 0) {
             return true;
-        } else return false;
- 
+        } else
+            return false;
+
     }
 
     /**
      * sets the position of the arena
-     *
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     public void setPosition(int x, int y) {
         int width = getWidth();
         int height = getHeight();
         setBounds(x, y, width, height);
     }
-    
+
     /**
      * paints elements onto the canvas
-     *
-     * @param g Graphics
+     * 
+     * @param g
+     *            Graphics
      */
     public void paintComponent(Graphics g) {
-        
+
         super.paintComponent(g);
-        
+
         Graphics2D g2 = (Graphics2D) g;
 
         // Draw an image
-        
-        g2.drawImage(oceanImg, 0, 0, null);
 
+        g2.drawImage(oceanImg, 0, 0, null);
 
     }
 
-   
 }

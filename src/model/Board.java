@@ -1,11 +1,11 @@
 package model;
+
 import java.io.Serializable;
 
 import view.Arena;
 
-
 /**
- *
+ * 
  * @author Marshall
  */
 public class Board implements Serializable {
@@ -13,8 +13,8 @@ public class Board implements Serializable {
     private Boolean grid[][] = new Boolean[Arena.ARENA_SIZE][Arena.ARENA_SIZE];
 
     /**
-     * creates a board array for the program to keep track
-     * of hits, misses, and empty cells
+     * creates a board array for the program to keep track of hits, misses, and
+     * empty cells
      */
     public Board() {
 
@@ -27,8 +27,11 @@ public class Board implements Serializable {
 
     /**
      * returns the value of te cell, null, true, false
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      * @return Boolean
      */
     public Boolean isEmpty(int x, int y) {
@@ -37,8 +40,11 @@ public class Board implements Serializable {
 
     /**
      * sets the cell to true
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     public void setHit(ShotLocation shot) {
         grid[shot.x][shot.y] = true;
@@ -46,8 +52,11 @@ public class Board implements Serializable {
 
     /**
      * sets the cell to false
-     * @param x int
-     * @param y int
+     * 
+     * @param x
+     *            int
+     * @param y
+     *            int
      */
     public void setMiss(ShotLocation shot) {
         grid[shot.x][shot.y] = false;

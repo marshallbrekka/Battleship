@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,14 +7,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
 /**
  * creates the arrows to move the ships
+ * 
  * @author Marshall
  */
 public class Arrows extends JPanel implements ActionListener {
     private Arena arena;
-
 
     private JButton left;
     private JButton right;
@@ -25,8 +25,11 @@ public class Arrows extends JPanel implements ActionListener {
 
     /**
      * creates the arrows
-     * @param a Arena
-     * @param newWindow BattleshipGame
+     * 
+     * @param a
+     *            Arena
+     * @param newWindow
+     *            BattleshipGame
      */
     public Arrows(GameView newWindow) {
         window = newWindow;
@@ -35,9 +38,6 @@ public class Arrows extends JPanel implements ActionListener {
         BorderLayout b2 = new BorderLayout();
         this.setLayout(bl);
         panel.setLayout(b2);
-        
-
-        
 
         left = new JButton("Left");
         right = new JButton("Right");
@@ -45,7 +45,7 @@ public class Arrows extends JPanel implements ActionListener {
         bottom = new JButton("Down");
         rotate = new JButton("R");
         play = new JButton("Play");
-        
+
         add(left, BorderLayout.WEST);
         add(right, BorderLayout.EAST);
         add(top, BorderLayout.NORTH);
@@ -62,14 +62,16 @@ public class Arrows extends JPanel implements ActionListener {
         play.addActionListener(this);
 
     }
-    
+
     public void setArena(Arena a) {
-    	arena = a;
+        arena = a;
     }
 
     /**
      * action listener for the buttons
-     * @param ae ActionEvent
+     * 
+     * @param ae
+     *            ActionEvent
      */
     public void actionPerformed(ActionEvent ae) {
         Object source = ae.getSource();
@@ -87,18 +89,18 @@ public class Arrows extends JPanel implements ActionListener {
             window.startGameCallback();
         }
     }
-    
+
     public void enable() {
-    	JButton[] buttons = {top, bottom, left, right, rotate, play};
-    	for(int i = 0; i < buttons.length; i++) {
-    		buttons[i].setEnabled(true);
-    	}
+        JButton[] buttons = { top, bottom, left, right, rotate, play };
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setEnabled(true);
+        }
     }
-    
+
     public void disable() {
-    	JButton[] buttons = {top, bottom, left, right, rotate, play};
-    	for(int i = 0; i < buttons.length; i++) {
-    		buttons[i].setEnabled(false);
-    	}
+        JButton[] buttons = { top, bottom, left, right, rotate, play };
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setEnabled(false);
+        }
     }
 }

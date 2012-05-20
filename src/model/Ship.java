@@ -1,8 +1,10 @@
 package model;
+
 import java.io.Serializable;
 
 /**
  * abstract ship class
+ * 
  * @author Marshall
  */
 public abstract class Ship implements Ships, Serializable {
@@ -20,15 +22,18 @@ public abstract class Ship implements Ships, Serializable {
 
     private int y = 0;
 
-    /** 
+    /**
      * the posible values for the ships rotated state
      */
-    public enum Rotation { HORIZONTAL, VERTICAL };
+    public enum Rotation {
+        HORIZONTAL, VERTICAL
+    };
 
     private Rotation rotation;
 
     /**
      * gets the name
+     * 
      * @return String
      */
     public String getName() {
@@ -38,6 +43,7 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * gets the ships size
+     * 
      * @return int
      */
     public int getSize() {
@@ -53,6 +59,7 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * gets the ships health
+     * 
      * @return int
      */
     public int getHealth() {
@@ -61,8 +68,11 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * sets the ships position
-     * @param newX int
-     * @param newY int
+     * 
+     * @param newX
+     *            int
+     * @param newY
+     *            int
      */
     public void setPosition(int newX, int newY) {
         this.x = newX;
@@ -71,7 +81,9 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * sets the ships rotation
-     * @param newRotation Rotation
+     * 
+     * @param newRotation
+     *            Rotation
      */
     public void setRotation(Rotation newRotation) {
         this.rotation = newRotation;
@@ -79,15 +91,17 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * gets the ships position
+     * 
      * @return int[]
      */
     public int[] getPosition() {
-        int[] pos = {this.x, this.y};
+        int[] pos = { this.x, this.y };
         return pos;
     }
 
     /**
      * gets the ships rotation
+     * 
      * @return Rotation
      */
     public Rotation getRotation() {
@@ -96,7 +110,9 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * sets the ships name
-     * @param newName String
+     * 
+     * @param newName
+     *            String
      */
     protected void setName(String newName) {
         this.name = newName;
@@ -104,7 +120,9 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * sets the ships size
-     * @param newSize int
+     * 
+     * @param newSize
+     *            int
      */
     protected void setSize(int newSize) {
         this.size = newSize;
@@ -113,11 +131,11 @@ public abstract class Ship implements Ships, Serializable {
 
     /**
      * gets the ships index
+     * 
      * @return int
      */
     public int getIndex() {
         return this.index;
     }
 
-   
 }

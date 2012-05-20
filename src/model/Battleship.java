@@ -1,6 +1,8 @@
 package model;
+
 /**
  * battleship
+ * 
  * @author Marshall
  */
 public class Battleship extends Ship {
